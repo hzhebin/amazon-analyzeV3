@@ -8,6 +8,14 @@ st.title("📈 亚马逊利润最大化分析工具")
 uploaded_file = st.file_uploader("📤 上传产品表现表格 (Excel)", type=["xlsx"])
 if uploaded_file:
     df = pd.read_excel(uploaded_file)
+
+    # 自动字段名映射
+    rename_map = {
+        '售价(总价)': '售价',
+        'Sessions-Total': 'Sessions'
+    }
+    df.rename(columns=rename_map, inplace=True)
+
     model = XGBModel()
     try:
         model.train(df)
