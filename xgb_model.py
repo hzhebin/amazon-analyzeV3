@@ -13,10 +13,14 @@ class XGBModel:
 
     def preprocess(self, df: pd.DataFrame):
         df = df.copy()
-        df['ACOS'] = df['ACOS'].astype(str).str.replace('%', '').astype(float) / 100
-        df['CVR'] = df['CVR'].astype(str).str.replace('%', '').astype(float) / 100
-        df['结算毛利率'] = df['结算毛利率'].astype(str).str.replace('%', '').astype(float)
+
+        # 强化数据清洗
+        df['ACOS'] = df['ACOS'].astype(str).str.strip().str.replace('%', '', regex=False).replace('', '0').astype(float) / 100
+        df['CVR'] = df['CVR'].astype(str).str.strip().str.replace('%', '', regex=False).replace('', '0').astype(float) / 100
+        df['结算毛利率'] = df['结算毛利率'].astype(str).str.strip().str.replace('%', '', regex=False).replace('', '0').astype(float)
+
         df['利润'] = df['销售额'] * (df['结算毛利率'] / 100)
+
         return df.dropna(subset=self.features + ['订单量', '利润'])
 
     def train(self, df: pd.DataFrame):
