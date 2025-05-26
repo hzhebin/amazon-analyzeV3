@@ -2,7 +2,6 @@ streamlit
 pandas
 numpy
 xgboost
-shap
 optuna
 openpyxl
 scikit-learn
