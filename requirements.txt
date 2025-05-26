@@ -3,7 +3,6 @@ pandas
 numpy
 xgboost
 shap
-optuna
 plotly
 scikit-learn
 openpyxl
