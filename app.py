@@ -71,3 +71,9 @@ if uploaded_file:
         to_download = df[show_cols]
         csv = to_download.to_csv(index=False).encode('utf-8-sig')
         st.download_button("下载优化建议 CSV", csv, file_name="利润优化建议.csv")
+import os
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 7860))
+    st._is_running_with_streamlit = True  # 避免非CLI启动问题
+    os.system(f"streamlit run app.py --server.port {port} --server.enableCORS false")
