@@ -1,3 +1,5 @@
+import os
+os.environ["STREAMLIT_SERVER_PORT"] = os.getenv("PORT", "8501")
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
