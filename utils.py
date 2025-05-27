@@ -39,12 +39,10 @@ def fuzzy_map_columns(cols):
                 result[col] = v
                 break
         else:
-            # fallback: retain original
             result[col] = col.lower()
     return result
 
 def detect_anomalies(df):
-    # 检测销量/利润的异常波动，比如促销、断货
     sales = df['sales_qty']
     profit = df['profit']
     anomaly = (sales.pct_change().abs() > 2) | (profit.pct_change().abs() > 2)

@@ -1,5 +1,6 @@
 import os
-os.environ["STREAMLIT_SERVER_PORT"] = os.getenv("PORT", "8501")
+os.environ['STREAMLIT_SERVER_PORT'] = os.getenv('PORT', '8501')
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -19,34 +20,26 @@ if uploaded_file:
     st.write("**字段映射后的数据预览：**")
     st.dataframe(df.head())
 
-    # 检查异常
     anomalies = detect_anomalies(df)
     if not anomalies.empty:
         st.warning("检测到数据中可能存在异常波动（如促销、断货），建议检查这些行。")
         st.dataframe(anomalies)
 
     st.subheader("策略模拟与建议")
-    # 策略一：销量优先
     with st.expander("销量优先策略（加速动销）"):
         result_vol = simulate_strategy(df, mode='volume')
         st.json(result_vol['params'])
         st.markdown(result_vol['explanation'])
         st.write(f"预计14天销量: {int(result_vol['pred_sales'])}, 预计利润: {result_vol['pred_profit']:.2f}")
-        st.subheader("SHAP变量权重")
-        shap_fig = result_vol['shap'].visualize()
-        st.pyplot(shap_fig)
+        st.write("图形生成中...")
 
-    # 策略二：利润最大化
     with st.expander("利润最大化策略"):
         result_profit = simulate_strategy(df, mode='profit')
         st.json(result_profit['params'])
         st.markdown(result_profit['explanation'])
         st.write(f"预计14天销量: {int(result_profit['pred_sales'])}, 预计利润: {result_profit['pred_profit']:.2f}")
-        st.subheader("SHAP变量权重")
-        shap_fig = result_profit['shap'].visualize()
-        st.pyplot(shap_fig)
+        st.write("图形生成中...")
 
-    # 历史/预测对比图
     st.subheader("利润与销量趋势")
     fig, ax = plt.subplots()
     df['利润预测'] = df['profit']

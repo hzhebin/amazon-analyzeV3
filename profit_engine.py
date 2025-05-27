@@ -11,19 +11,16 @@ def inventory_constraint(X, min_days=7, max_days=90, target_days=30):
     return True
 
 def simulate_strategy(df, mode='profit', days_predict=14):
-    # 数据字段
     features = ['price', 'cpc', 'ad_spend', 'sessions', 'cvr', 'acos', 'acoas', 'cpm', 'cpo', 'profit_margin', 'days_in_stock']
     target = 'profit'
     xgb = ProfitXGBModel()
     xgb.fit(df, target, features)
     X_base = df[features].iloc[[-1]].copy()
-    # 约束函数
     if mode == 'volume':
-        def constraint(X): return X['days_in_stock'].iloc[0] > 30  # 需要加速动销
+        def constraint(X): return X['days_in_stock'].iloc[0] > 30
     else:
         def constraint(X): return inventory_constraint(X, target_days=30)
     best_params, best_profit = run_optimization(xgb, X_base, constraint)
-    # 预测未来14天利润和销量
     X_pred = X_base.copy()
     for k, v in best_params.items():
         X_pred[k] = v
