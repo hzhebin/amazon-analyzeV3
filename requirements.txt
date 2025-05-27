@@ -1,9 +1,9 @@
 streamlit
-pandas
-numpy
 xgboost
 optuna
 shap
-matplotlib
+pandas
+numpy
 scikit-learn
-openpyxl
+matplotlib
+plotly
