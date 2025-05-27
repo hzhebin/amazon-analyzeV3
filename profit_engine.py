@@ -1,6 +1,6 @@
 import numpy as np
 from xgb_model import ProfitXGBModel
-from optimizer import run_optimization
+from param_optimizer import run_optimization
 
 def inventory_constraint(X, min_days=7, max_days=90, target_days=30):
     days_in_stock = X.get('days_in_stock', [target_days])
