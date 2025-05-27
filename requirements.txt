@@ -1,3 +1,9 @@
 streamlit
 pandas
+numpy
+xgboost
+optuna
+shap
+matplotlib
+scikit-learn
 openpyxl
