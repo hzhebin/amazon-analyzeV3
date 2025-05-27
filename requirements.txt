@@ -1,9 +1,4 @@
 streamlit
-xgboost
-optuna
-shap
 pandas
 numpy
-scikit-learn
-matplotlib
 plotly
