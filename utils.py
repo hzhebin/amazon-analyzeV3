@@ -9,6 +9,7 @@ FIELD_MAP = {
     '库存': 'stock_qty',
     '销量': 'sales_qty',
     '销量(件)': 'sales_qty',
+    '销售量': 'sales_qty',
     '利润额': 'profit',
     'Sessions': 'sessions',
     'Sessions-Total': 'sessions',
@@ -33,13 +34,23 @@ FIELD_MAP = {
 
 def fuzzy_map_columns(cols):
     result = {}
+    used = set()
     for col in cols:
+        mapped = None
         for k, v in FIELD_MAP.items():
             if k in col or v in col.lower():
-                result[col] = v
+                mapped = v
                 break
-        else:
-            result[col] = col.lower()
+        if not mapped:
+            mapped = col.lower()
+        # 避免重复：若已映射过，自动加后缀
+        suffix = 1
+        new_mapped = mapped
+        while new_mapped in used:
+            suffix += 1
+            new_mapped = f"{mapped}_{suffix}"
+        used.add(new_mapped)
+        result[col] = new_mapped
     return result
 
 def detect_anomalies(df):
