@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 
 FIELD_MAP = {
     '售价': 'price',
@@ -10,7 +11,12 @@ FIELD_MAP = {
     '销量': 'sales_qty',
     '销量(件)': 'sales_qty',
     '销售量': 'sales_qty',
+    '订单销量': 'sales_qty',
     '利润额': 'profit',
+    '订单利润': 'profit',
+    '利润': 'profit',
+    '结算利润': 'profit',
+    '利润值': 'profit',
     'Sessions': 'sessions',
     'Sessions-Total': 'sessions',
     '浏览量': 'sessions',
@@ -43,7 +49,6 @@ def fuzzy_map_columns(cols):
                 break
         if not mapped:
             mapped = col.lower()
-        # 避免重复：若已映射过，自动加后缀
         suffix = 1
         new_mapped = mapped
         while new_mapped in used:
@@ -54,6 +59,8 @@ def fuzzy_map_columns(cols):
     return result
 
 def detect_anomalies(df):
+    if 'sales_qty' not in df.columns or 'profit' not in df.columns:
+        return pd.DataFrame()
     sales = df['sales_qty']
     profit = df['profit']
     anomaly = (sales.pct_change().abs() > 2) | (profit.pct_change().abs() > 2)
