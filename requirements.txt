@@ -7,5 +7,3 @@ numpy
 scikit-learn
 matplotlib
 plotly
-openpyxl
-python-dotenv
